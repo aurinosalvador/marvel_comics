@@ -61,26 +61,34 @@ class _MapsState extends State<Maps> {
       Geolocator.requestPermission();
     }
 
-    CircularWaiting myCircular = CircularWaiting(
-      context,
-      message: 'Getting Position',
-    );
+    if (await Geolocator.isLocationServiceEnabled()) {
+      CircularWaiting myCircular = CircularWaiting(
+        context,
+        message: 'Getting Position',
+      );
 
-    myCircular.show();
+      myCircular.show();
 
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-        forceAndroidLocationManager: true);
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best,
+          forceAndroidLocationManager: true);
 
-    myCircular.close();
+      myCircular.close();
 
-    LatLng myPosition = LatLng(position.latitude, position.longitude);
+      LatLng myPosition = LatLng(position.latitude, position.longitude);
 
-    _moveCamera(myPosition);
+      _moveCamera(myPosition);
 
-    Placemark place = await _getAddressByLocation(myPosition);
+      Placemark place = await _getAddressByLocation(myPosition);
 
-    _sendAddress(place);
+      _sendAddress(place);
+    } else {
+      MyDialogs.show(
+        context,
+        'Location Service is diasble!',
+        title: 'Warning',
+      );
+    }
   }
 
   void _getLocationByAddress(String address) async {
@@ -107,7 +115,6 @@ class _MapsState extends State<Maps> {
 
   @override
   Widget build(BuildContext context) {
-    ScaffoldState scaffoldState = ScaffoldState();
     return Scaffold(
       appBar: AppBar(
         title: TextField(

@@ -19,11 +19,11 @@ class ComicDetail extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          padding: const EdgeInsets.all(16.0),
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CachedNetworkImage(
                 imageUrl: '$url/portrait_uncanny.jpg',
@@ -31,25 +31,23 @@ class ComicDetail extends StatelessWidget {
                 placeholder: (context, url) => CircularProgressIndicator(),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-              SizedBox(height: 8.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  comic.description ?? 'No Description',
-                  textAlign: TextAlign.justify,
-                  softWrap: true,
-                  textScaleFactor: 1.2,
-                  // overflow: TextOverflow.ellipsis,
-                ),
+              // SizedBox(height: 6.0),
+              Text(
+                comic.description ?? 'No Description',
+                textAlign: TextAlign.justify,
+                softWrap: true,
+                textScaleFactor: 1.2,
+                // overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 8.0),
-              ElevatedButton(
+              ElevatedButton.icon(
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute<void>(
                     builder: (_) => Maps(),
                   ),
                 ),
-                child: Text('Send to Address'),
+                label: Text('Send to Address'),
+                icon: Icon(Icons.shopping_cart),
               ),
             ],
           ),

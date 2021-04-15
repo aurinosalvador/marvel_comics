@@ -24,7 +24,6 @@ class _HomeState extends State<Home> {
   List<ComicModel> comics = [];
   StreamController _streamController;
   RootModel rootModel;
-  // ComicConsumer = _comicConsumer = ComicConsumer();
 
   @override
   void initState() {

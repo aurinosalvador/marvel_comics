@@ -36,13 +36,6 @@ class ComicCard extends StatelessWidget {
                 softWrap: true,
                 // overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 8.0),
-              Text(
-                comic.id.toString(),
-                textAlign: TextAlign.center,
-                softWrap: true,
-                // overflow: TextOverflow.ellipsis,
-              ),
             ],
           ),
         ),
