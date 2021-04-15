@@ -4,6 +4,8 @@ import 'package:mavel_comics/models/abstract_model.dart';
 ///
 ///
 class ComicModel extends AbstractModel<int> {
+  String description;
+  String thumbnail;
   String title;
 
   ///
@@ -15,7 +17,9 @@ class ComicModel extends AbstractModel<int> {
   ///
   ///
   ComicModel.fromJson(Map<String, dynamic> map)
-      : title = map['title'],
+      : description = map['description'],
+        thumbnail = map['thumbnail']['path'],
+        title = map['title'],
         super.fromJson(map);
 
   ///
@@ -30,17 +34,17 @@ class ComicModel extends AbstractModel<int> {
   @override
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = super.toMap();
+    if (description != null) {
+      map['description'] = description;
+    }
+    if (thumbnail != null) {
+      map['thumbnail']['path'] = thumbnail;
+    }
     if (title != null) {
       map['title'] = title;
     }
     return map;
   }
-
-  ///
-  ///
-  ///
-  @override
-  String get searchTerm => title;
 
   ///
   ///

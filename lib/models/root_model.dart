@@ -4,12 +4,12 @@ import 'package:mavel_comics/models/data_model.dart';
 ///
 ///
 ///
-class RootModel<T extends AbstractModel<int>> {
+class RootModel {
   String attributionHTML;
   String attributionText;
   int code;
   String copyright;
-  DataModel<T> data;
+  DataModel data;
   String etag;
   String status;
 
@@ -21,14 +21,13 @@ class RootModel<T extends AbstractModel<int>> {
   ///
   ///
   ///
-  RootModel fromJson(Map<String, dynamic> map, T model) {
+  RootModel fromJson(Map<String, dynamic> map, AbstractModel model) {
     attributionHTML = map['attributionHTML'];
     attributionText = map['attributionText'];
     code = map['code'];
     copyright = map['copyright'];
-    data = map['data'] != null
-        ? DataModel<T>().fromJson(map['data'], model)
-        : null;
+    data =
+        map['data'] != null ? DataModel().fromJson(map['data'], model) : null;
     etag = map['etag'];
     status = map['status'];
 

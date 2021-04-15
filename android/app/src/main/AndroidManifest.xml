@@ -1,8 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.aurinosalvador.marvel_comics.mavel_comics">
+
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
    <application
         android:label="mavel_comics"
         android:icon="@mipmap/ic_launcher">
+
+       <meta-data android:name="com.google.android.geo.API_KEY"
+                  android:value="AIzaSyBEdNmt-R5ooxJDMVOshUBDEJ6MD9ysQyg"/>
+
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -27,6 +36,10 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+
+
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

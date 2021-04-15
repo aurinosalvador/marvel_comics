@@ -1,8 +1,8 @@
 ///
 ///
 ///
-abstract class AbstractModel<A> {
-  A id;
+abstract class AbstractModel<int> {
+  int id;
   int updatedAt;
   int deletedAt;
   bool selected = false;
@@ -23,7 +23,7 @@ abstract class AbstractModel<A> {
   ///
   ///
   ///
-  AbstractModel<A> fromJson(Map<String, dynamic> map);
+  AbstractModel<int> fromJson(Map<String, dynamic> map);
 
   // ///
   // ///

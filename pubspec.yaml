@@ -18,6 +18,12 @@ dependencies:
   flutter_dotenv: ^3.1.0
   # https://pub.dev/packages/crypto
   crypto: ^2.1.5
+  # https://pub.dev/packages/google_maps_flutter
+  google_maps_flutter: ^1.2.0
+  # https://pub.dev/packages/geocoding
+  geocoding: ^1.0.5
+  # https://pub.dev/packages/geolocator
+  geolocator: ^6.1.1
 
   cupertino_icons: ^1.0.2
 

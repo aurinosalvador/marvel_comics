@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:mavel_comics/views/home.dart';
-import 'package:mavel_comics/views/preload.dart';
 
 void main() async {
   await DotEnv.load();

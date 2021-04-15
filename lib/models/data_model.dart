@@ -3,11 +3,11 @@ import 'package:mavel_comics/models/abstract_model.dart';
 ///
 ///
 ///
-class DataModel<T extends AbstractModel<int>> {
+class DataModel {
   int count;
   int limit;
   int offset;
-  List<T> results;
+  List<AbstractModel> results;
   int total;
 
   ///
@@ -18,7 +18,7 @@ class DataModel<T extends AbstractModel<int>> {
   ///
   ///
   ///
-  DataModel fromJson(Map<String, dynamic> map, T model) {
+  DataModel fromJson(Map<String, dynamic> map, AbstractModel model) {
     count = map['count'];
     limit = map['limit'];
     offset = map['offset'];
@@ -31,10 +31,6 @@ class DataModel<T extends AbstractModel<int>> {
 
     return this;
   }
-
-  ///
-  ///
-  ///
 
   ///
   ///
