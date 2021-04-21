@@ -3,11 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:marvel_comics/consumers/comic_consumer.dart';
+import 'package:marvel_comics/controllers/cart_controller.dart';
+import 'package:marvel_comics/controllers/comic_controller.dart';
 import 'package:marvel_comics/models/comic_model.dart';
 import 'package:marvel_comics/models/root_model.dart';
+import 'package:marvel_comics/views/cart.dart';
 import 'package:marvel_comics/widgets/comic_card.dart';
 import 'package:marvel_comics/widgets/waiting_message.dart';
+import 'package:provider/provider.dart';
 
 enum Status {
   Loading,
@@ -53,9 +56,9 @@ class _HomeState extends State<Home> {
     http.Response response;
 
     if (title != null && title.isNotEmpty) {
-      response = await ComicConsumer().getComics(offset, title: title);
+      response = await ComicController().getComics(offset, title: title);
     } else {
-      response = await ComicConsumer().getComics(offset);
+      response = await ComicController().getComics(offset);
     }
 
     Map<String, dynamic> body = jsonDecode(response.body);
@@ -84,7 +87,51 @@ class _HomeState extends State<Home> {
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
-            child: Icon(Icons.shopping_cart),
+            // child: Icon(Icons.shopping_cart),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => Cart(),
+                  ),
+                ),
+                child: Stack(
+                  alignment: Alignment.centerLeft,
+                  clipBehavior: Clip.none,
+                  children: <Widget>[
+                    Icon(Icons.shopping_cart),
+                    Positioned(
+                      top: -2,
+                      right: -8,
+                      child: Container(
+                        padding: const EdgeInsets.all(2.0),
+                        width: 20.0,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Consumer<CartController>(
+                          builder: (
+                            BuildContext context,
+                            CartController cart,
+                            Widget child,
+                          ) {
+                            return Text(
+                              cart.cartCount.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 9.0,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -105,11 +152,6 @@ class _HomeState extends State<Home> {
                       labelText: 'Search...',
                       suffixIcon: IconButton(
                         icon: Icon(Icons.search),
-                        // onPressed: () {
-                        //   FocusScope.of(context).unfocus();
-                        //   comics.clear();
-                        //   getData('0', title: _searchController.text);
-                        // },
                         onPressed: () =>
                             _search(context, _searchController.text),
                       ),
@@ -158,6 +200,34 @@ class _HomeState extends State<Home> {
               ],
             );
           } else {
+            if (snapshot.data == Status.Ready) {
+              return Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
+                    child: TextField(
+                      controller: _searchController,
+                      onEditingComplete: () =>
+                          _search(context, _searchController.text),
+                      decoration: InputDecoration(
+                        labelText: 'Search...',
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          onPressed: () =>
+                              _search(context, _searchController.text),
+                        ),
+                      ),
+                      maxLines: 1,
+                    ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text('No data.'),
+                    ),
+                  ),
+                ],
+              );
+            }
             return WaitingMessage(
               message: 'Loading...',
             );

@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 
-class ComicConsumer {
+class ComicController {
   Future<http.Response> getComics(String offset, {String title}) async {
     String ts = DateTime.now().millisecondsSinceEpoch.toString();
     String hash = generateMd5('$ts${env['PRIVATE_KEY']}${env['API_KEY']}');

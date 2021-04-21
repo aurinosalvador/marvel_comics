@@ -24,6 +24,8 @@ dependencies:
   geocoding: ^1.0.5
   # https://pub.dev/packages/geolocator
   geolocator: ^6.1.1
+  # https://pub.dev/packages/provider
+  provider: ^4.3.3
 
   cupertino_icons: ^1.0.2
 

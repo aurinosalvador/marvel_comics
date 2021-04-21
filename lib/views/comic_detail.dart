@@ -43,16 +43,6 @@ class ComicDetail extends StatelessWidget {
                 maxLines: 3,
                 // overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 8.0),
-              ElevatedButton.icon(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => Maps(),
-                  ),
-                ),
-                label: Text('Send to Address'),
-                icon: Icon(Icons.shopping_cart),
-              ),
             ],
           ),
         ),

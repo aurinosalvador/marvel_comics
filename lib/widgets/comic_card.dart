@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:marvel_comics/controllers/cart_controller.dart';
 import 'package:marvel_comics/models/comic_model.dart';
 import 'package:marvel_comics/views/comic_detail.dart';
+import 'package:provider/provider.dart';
 
 enum ContentMenu {
   AddToCart,
@@ -82,7 +84,7 @@ class ComicCard extends StatelessWidget {
   void _menuClick(BuildContext context, ContentMenu contentMenu) {
     switch (contentMenu) {
       case ContentMenu.AddToCart:
-        // TODO: Handle this case.
+        Provider.of<CartController>(context, listen: false).addItem(comic);
         break;
       case ContentMenu.Details:
         Navigator.of(context).push(
