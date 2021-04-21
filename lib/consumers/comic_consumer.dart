@@ -5,16 +5,17 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 
 class ComicConsumer {
-  Future<http.Response> getComics(String offset) async {
+  Future<http.Response> getComics(String offset, {String title}) async {
     String ts = DateTime.now().millisecondsSinceEpoch.toString();
     String hash = generateMd5('$ts${env['PRIVATE_KEY']}${env['API_KEY']}');
 
-    Map<String, String> params = {
+    Map<String, String> params = <String, String>{
       'ts': ts,
       'apikey': env['API_KEY'],
       'hash': hash,
       'offset': offset,
       'limit': '20',
+      if (title != null) 'titleStartsWith': title,
       'orderBy': 'title',
     };
 

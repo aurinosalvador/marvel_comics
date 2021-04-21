@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 import 'package:mavel_comics/views/home.dart';
 
 void main() async {
-  await DotEnv.load();
+  await dot_env.load();
   runApp(MyApp());
 }
 

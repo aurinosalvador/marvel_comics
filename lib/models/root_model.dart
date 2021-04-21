@@ -38,7 +38,7 @@ class RootModel {
   ///
   ///
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = {};
+    Map<String, dynamic> map = <String, dynamic>{};
     if (attributionHTML != null) {
       map['attributionHTML'] = attributionHTML;
     }

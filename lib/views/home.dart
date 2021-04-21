@@ -12,6 +12,8 @@ import 'package:mavel_comics/widgets/waiting_message.dart';
 enum Status {
   Loading,
   Ready,
+  ListEnd,
+  Search,
 }
 
 class Home extends StatefulWidget {
@@ -21,16 +23,17 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   ScrollController _scrollController;
-  List<ComicModel> comics = [];
-  StreamController _streamController;
+  List<ComicModel> comics = <ComicModel>[];
+  List<ComicModel> cart = <ComicModel>[];
+  StreamController<Status> _streamController;
+  TextEditingController _searchController;
   RootModel rootModel;
 
   @override
   void initState() {
     super.initState();
-
     _streamController = StreamController<Status>();
-
+    _searchController = TextEditingController();
     _scrollController = ScrollController()..addListener(_scrollListener);
 
     getData('0');
@@ -40,15 +43,20 @@ class _HomeState extends State<Home> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      int offset = comics.length + 20;
-      getData(offset.toString());
+      _streamController.add(Status.ListEnd);
     }
   }
 
-  void getData(String offset) async {
+  void getData(String offset, {String title}) async {
     _streamController.add(Status.Loading);
 
-    http.Response response = await ComicConsumer().getComics(offset);
+    http.Response response;
+
+    if (title != null && title.isNotEmpty) {
+      response = await ComicConsumer().getComics(offset, title: title);
+    } else {
+      response = await ComicConsumer().getComics(offset);
+    }
 
     Map<String, dynamic> body = jsonDecode(response.body);
 
@@ -67,38 +75,71 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text('Marvel Comics'),
         centerTitle: true,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Icon(Icons.shopping_cart),
+          ),
+        ],
       ),
       body: StreamBuilder<Status>(
         initialData: Status.Loading,
         stream: _streamController.stream,
-        builder: (context, snapshot) {
-          if (comics.length != 0) {
-            Size size = MediaQuery.of(context).size;
-
-            /*24 is for notification bar on Android*/
-            final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
-            final double itemWidth = size.width / 2;
-
+        builder: (BuildContext context, AsyncSnapshot<Status> snapshot) {
+          if (comics.isNotEmpty) {
             return Column(
-              children: [
-                Expanded(
-                  child: GridView(
-                    controller: _scrollController,
-                    padding: const EdgeInsets.all(10.0),
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10.0,
-                      childAspectRatio: (itemWidth / itemHeight),
-                      mainAxisSpacing: 10.0,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      labelText: 'Search...',
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          comics.clear();
+                          getData('0', title: _searchController.text);
+                        },
+                      ),
                     ),
+                    maxLines: 1,
+                  ),
+                ),
+                Expanded(
+                  child: GridView.extent(
+                    controller: _scrollController,
+                    maxCrossAxisExtent: 300.0,
+                    padding: const EdgeInsets.all(8.0),
+                    childAspectRatio: 0.556,
+                    mainAxisSpacing: 8.0,
+                    crossAxisSpacing: 8.0,
                     children: comics
-                        .map((e) => ComicCard(
-                              comic: e,
+                        .map((ComicModel comic) => ComicCard(
+                              comic: comic,
                             ))
                         .toList(),
                   ),
                 ),
+                if (snapshot.data == Status.ListEnd)
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        int offset = comics.length + 20;
+                        if (_searchController.text == null) {
+                          getData(offset.toString());
+                        } else {
+                          getData(
+                            offset.toString(),
+                            title: _searchController.text,
+                          );
+                        }
+                      },
+                      child: Text('Load more'),
+                    ),
+                  ),
                 if (snapshot.data == Status.Loading)
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -119,6 +160,7 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     _streamController.close();
+    _searchController.dispose();
     _scrollController.dispose();
     super.dispose();
   }

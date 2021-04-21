@@ -36,7 +36,7 @@ class DataModel {
   ///
   ///
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = {};
+    Map<String, dynamic> map = <String, dynamic>{};
     if (count != null) {
       map['count'] = count;
     }

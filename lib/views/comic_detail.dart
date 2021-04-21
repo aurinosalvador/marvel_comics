@@ -24,12 +24,15 @@ class ComicDetail extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+            children: <Widget>[
               CachedNetworkImage(
                 imageUrl: '$url/portrait_uncanny.jpg',
                 // width: 250,
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                placeholder: (BuildContext context, String url) =>
+                    CircularProgressIndicator(),
+                errorWidget:
+                    (BuildContext context, String url, dynamic error) =>
+                        Icon(Icons.error),
               ),
               // SizedBox(height: 6.0),
               Text(
@@ -37,6 +40,7 @@ class ComicDetail extends StatelessWidget {
                 textAlign: TextAlign.justify,
                 softWrap: true,
                 textScaleFactor: 1.2,
+                maxLines: 3,
                 // overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 8.0),

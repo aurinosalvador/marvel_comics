@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:mavel_comics/models/comic_model.dart';
 import 'package:mavel_comics/views/comic_detail.dart';
 
+enum ContentMenu {
+  AddToCart,
+  Details,
+}
+
 class ComicCard extends StatelessWidget {
   final ComicModel comic;
 
@@ -11,35 +16,81 @@ class ComicCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String url = comic.thumbnail.replaceAll('http', 'https');
-    return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute<void>(
-          builder: (_) => ComicDetail(comic: comic),
-        ),
-      ),
+
+    return PopupMenuButton<ContentMenu>(
+      itemBuilder: (BuildContext context) => _getMenu(),
+      onSelected: (ContentMenu contentMenu) => _menuClick(context, contentMenu),
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
               CachedNetworkImage(
                 imageUrl: '$url/portrait_uncanny.jpg',
                 // width: 250,
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                placeholder: (BuildContext context, String url) =>
+                    CircularProgressIndicator(),
+                errorWidget:
+                    (BuildContext context, String url, dynamic error) =>
+                        Icon(Icons.error),
               ),
               SizedBox(height: 8.0),
               Text(
                 comic.title,
                 textAlign: TextAlign.center,
                 softWrap: true,
-                // overflow: TextOverflow.ellipsis,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  List<PopupMenuEntry<ContentMenu>> _getMenu() {
+    return <PopupMenuEntry<ContentMenu>>[
+      PopupMenuItem<ContentMenu>(
+        value: ContentMenu.AddToCart,
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.add_shopping_cart),
+            ),
+            Text('Add to Cart'),
+          ],
+        ),
+      ),
+      PopupMenuItem<ContentMenu>(
+        value: ContentMenu.Details,
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.description),
+            ),
+            Text('Details'),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  void _menuClick(BuildContext context, ContentMenu contentMenu) {
+    switch (contentMenu) {
+      case ContentMenu.AddToCart:
+        // TODO: Handle this case.
+        break;
+      case ContentMenu.Details:
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => ComicDetail(comic: comic),
+          ),
+        );
+        break;
+    }
   }
 }

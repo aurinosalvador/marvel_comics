@@ -15,7 +15,7 @@ class Maps extends StatefulWidget {
 
 class _MapsState extends State<Maps> {
   GoogleMapController _controller;
-  Set<Marker> markers = Set<Marker>();
+  Set<Marker> markers = <Marker>{};
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(-7.220693, -39.3277049),
@@ -58,7 +58,7 @@ class _MapsState extends State<Maps> {
     LocationPermission permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.denied) {
-      Geolocator.requestPermission();
+      await Geolocator.requestPermission();
     }
 
     if (await Geolocator.isLocationServiceEnabled()) {
@@ -83,7 +83,7 @@ class _MapsState extends State<Maps> {
 
       _sendAddress(place);
     } else {
-      MyDialogs.show(
+      await MyDialogs.show(
         context,
         'Location Service is diasble!',
         title: 'Warning',
