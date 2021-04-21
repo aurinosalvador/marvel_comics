@@ -1,4 +1,4 @@
-package com.github.aurinosalvador.marvel_comics.mavel_comics;
+package com.github.aurinosalvador.marvel_comics.marvel_comics;
 
 import io.flutter.embedding.android.FlutterActivity;
 

@@ -3,11 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:mavel_comics/consumers/comic_consumer.dart';
-import 'package:mavel_comics/models/comic_model.dart';
-import 'package:mavel_comics/models/root_model.dart';
-import 'package:mavel_comics/widgets/comic_card.dart';
-import 'package:mavel_comics/widgets/waiting_message.dart';
+import 'package:marvel_comics/consumers/comic_consumer.dart';
+import 'package:marvel_comics/models/comic_model.dart';
+import 'package:marvel_comics/models/root_model.dart';
+import 'package:marvel_comics/widgets/comic_card.dart';
+import 'package:marvel_comics/widgets/waiting_message.dart';
 
 enum Status {
   Loading,
@@ -69,6 +69,12 @@ class _HomeState extends State<Home> {
     _streamController.add(Status.Ready);
   }
 
+  void _search(BuildContext context, String title) {
+    FocusScope.of(context).unfocus();
+    comics.clear();
+    getData('0', title: title);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,15 +99,19 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
                   child: TextField(
                     controller: _searchController,
+                    onEditingComplete: () =>
+                        _search(context, _searchController.text),
                     decoration: InputDecoration(
                       labelText: 'Search...',
                       suffixIcon: IconButton(
                         icon: Icon(Icons.search),
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          comics.clear();
-                          getData('0', title: _searchController.text);
-                        },
+                        // onPressed: () {
+                        //   FocusScope.of(context).unfocus();
+                        //   comics.clear();
+                        //   getData('0', title: _searchController.text);
+                        // },
+                        onPressed: () =>
+                            _search(context, _searchController.text),
                       ),
                     ),
                     maxLines: 1,

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:mavel_comics/models/comic_model.dart';
-import 'package:mavel_comics/views/maps.dart';
+import 'package:marvel_comics/models/comic_model.dart';
+import 'package:marvel_comics/views/maps.dart';
 
 class ComicDetail extends StatelessWidget {
   final ComicModel comic;

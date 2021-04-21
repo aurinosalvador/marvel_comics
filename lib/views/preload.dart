@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:mavel_comics/widgets/waiting_message.dart';
+import 'package:marvel_comics/widgets/waiting_message.dart';
 
 class Preload extends StatefulWidget {
   @override

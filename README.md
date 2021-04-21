@@ -1,4 +1,4 @@
-# mavel_comics
+# marvel_comics
 
 Show Marvel Comics
 

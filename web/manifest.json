@@ -1,6 +1,6 @@
 {
-    "name": "mavel_comics",
-    "short_name": "mavel_comics",
+    "name": "marvel_comics",
+    "short_name": "marvel_comics",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

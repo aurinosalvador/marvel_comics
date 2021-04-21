@@ -1,4 +1,4 @@
-import 'package:mavel_comics/models/abstract_model.dart';
+import 'package:marvel_comics/models/abstract_model.dart';
 
 ///
 ///

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
-import 'package:mavel_comics/views/home.dart';
+import 'package:marvel_comics/views/home.dart';
 
 void main() async {
   await dot_env.load();

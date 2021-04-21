@@ -29,7 +29,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.github.aurinosalvador.marvel_comics.mavel_comics"
+        applicationId "com.github.aurinosalvador.marvel_comics.marvel_comics"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()

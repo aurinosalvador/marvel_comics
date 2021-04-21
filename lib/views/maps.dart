@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mavel_comics/widgets/circular_waiting.dart';
-import 'package:mavel_comics/widgets/my_dialogs.dart';
+import 'package:marvel_comics/widgets/circular_waiting.dart';
+import 'package:marvel_comics/widgets/my_dialogs.dart';
 
 class Maps extends StatefulWidget {
   @override
