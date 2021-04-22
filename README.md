@@ -50,8 +50,7 @@ O aplicativo funciona da seguinte forma:
 - Criar um arquivo .env na raíz do projeto contendo API_KEY=Your public key 
   e PRIVATE_KEY=Your private key, obtidas no passo anterior.
   
-- Para usar o google maps foi usado o pacote [Google Maps Flutter]
-  (https://pub.dev/packages/google_maps_flutter). Basta seguir as instruções 
+- Para usar o google maps foi usado o pacote [Google Maps Flutter](https://pub.dev/packages/google_maps_flutter). Basta seguir as instruções 
   de uso mostradas no site.
   
 - Abrir o projeto e ir até o arquivo android/app/src/main/AndroidManifest.xml e onde tem GOOGLE_API_KEY_HERE substitui pela chave do google, obtida 
