@@ -2,7 +2,7 @@
 
 ## O Projeto
 
-O projeto consistem em consumir a API da Marvel, como solicitado no desafio, 
+O projeto consiste em consumir a API da Marvel, como solicitado no desafio, 
 onde obtemos os dados relacionados aos quadrinhos.
 
 
