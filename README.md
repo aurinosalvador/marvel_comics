@@ -2,41 +2,46 @@
 
 ## O Projeto
 
-O projeto consistem em consumir a API da Marvel, como solicitada no desafio, 
-onde obtemos as informações relacionadas aos quadrinhos.
+O projeto consistem em consumir a API da Marvel, como solicitado no desafio, 
+onde obtemos os dados relacionados aos quadrinhos.
 
 
 ## Solução Adotada
 
-No projeto foi usada a arquitetura MVC, pois foi a solução que achei mais 
-adequada para o projeto, caso seja preciso fazer alterações será mais 
-simples, pois está divido em camadas. Foi usado Provider para disponibilizar algumas informações nas variadas telas, Async/Await para 
+No projeto foi usada a arquitetura MVC, sendo a solução que achei 
+adequada para o projeto, pois com MVC o código fica mais organizado e 
+também mais fácil de fazer novas implementações por sua divisão em 
+camadas.
+Foi 
+usado Provider para disponibilizar algumas informações nas variadas telas, Async/Await para 
 requisições assíncronas.
 
 ## Funcionamento do App
 O aplicativo funciona da seguinte forma:
 
 - Exibe uma Listagem com os Quadrinhos, podendo ser filtrado pelo título do 
-  quadrinho em um campo na parte superior da listagem.
+  quadrinho num campo na parte superior da listagem.
   
-- O usuário clica no quadrinho, onde é mostrada duas opções: Adicionar ao 
-  carrinho e Mostrar os detalhes do quadrinho.
-  - Ao Adicionar ao carrinho um ícone na AppBar irá indicar a quantidade de 
+- O usuário clica no quadrinho, onde são mostradas duas opções: __adicionar ao 
+  carrinho__ e __mostrar os detalhes do quadrinho__.
+  - Ao __adicionar ao carrinho__ um ícone na AppBar irá indicar a quantidade de 
     quadrinhos adicionados no carrinho de compras.
     
-  - Ao Mostrar detalhes do quadrinho será aberta uma tela com informações 
+  - Ao __mostrar detalhes do quadrinho__ será aberta uma tela com informações 
     adicionais sobre o mesmo.
 
 - Ao clicar no ícone do carrinho na AppBar o usuário será levado para a tela 
-  de Finalização de compras.
+  de __finalização de compras__.
 
-- Na tela de Finalização de compra o usuário poderá esvaziar o carrinho ou 
-  remover algum quadrinho, assim como desejar.
+- Na tela de __finalização de compras__ o usuário poderá esvaziar o carrinho ou 
+  remover algum quadrinho.
 
-- Para finalizar o usuário vai clicar no botão "Send Me", onde será 
-  solicitado ao utilizador o endereço para entrega, será aberta uma tela do 
-  Google maps onde o usuário pode selecionar no mapa a localização de 
-  entrega ou digitar o seu endereço num campo de pesquisa.
+- Para finalizar o usuário vai clicar no botão __Send Me__, onde será 
+  solicitado o endereço para entrega.
+  
+- Será aberta uma tela do 
+  Google Maps na qual o usuário pode selecionar no mapa a localização de 
+  entrega ou digitar o endereço no campo de pesquisa.
   
 ## Instruções para executar o projeto
 - Será necessário fazer um cadastro no site da Marvel para obter as chaves 
@@ -51,6 +56,8 @@ O aplicativo funciona da seguinte forma:
   
 - Abrir o projeto e ir até o arquivo android/app/src/main/AndroidManifest.xml e onde tem GOOGLE_API_KEY_HERE substitui pela chave do google, obtida 
   no passo anterior.
+  
+- No terminal ou na IDE executar o _flutter pub get_.
 
 - Executar o projeto.
   
