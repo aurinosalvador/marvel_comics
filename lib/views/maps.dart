@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:marvel_comics/controllers/cart_controller.dart';
 import 'package:marvel_comics/widgets/circular_waiting.dart';
 import 'package:marvel_comics/widgets/my_dialogs.dart';
+import 'package:provider/provider.dart';
 
 class Maps extends StatefulWidget {
   @override
@@ -26,7 +28,7 @@ class _MapsState extends State<Maps> {
     _controller = controller;
   }
 
-  void _sendAddress(Placemark place) {
+  void _sendAddress(Placemark place, CartController cart) {
     MyDialogs.yesNo(
       context: context,
       title: 'Warning',
@@ -35,7 +37,9 @@ class _MapsState extends State<Maps> {
           '${place.administrativeArea} '
           '${place.country}?',
       onYes: () {
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(); // Fecha a tela do Maps
+        Navigator.of(context).pop(); // Fecha a tela de Cart (Volta pra Home)
+        cart.clear();
         MyDialogs.showToast(context, 'Comic will be send!');
       },
     );
@@ -54,7 +58,7 @@ class _MapsState extends State<Maps> {
     _controller.moveCamera(CameraUpdate.newLatLng(myPosition));
   }
 
-  void _getMyLocation() async {
+  void _getMyLocation(CartController cart) async {
     LocationPermission permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.denied) {
@@ -81,7 +85,7 @@ class _MapsState extends State<Maps> {
 
       Placemark place = await _getAddressByLocation(myPosition);
 
-      _sendAddress(place);
+      _sendAddress(place, cart);
     } else {
       await MyDialogs.show(
         context,
@@ -91,7 +95,7 @@ class _MapsState extends State<Maps> {
     }
   }
 
-  void _getLocationByAddress(String address) async {
+  void _getLocationByAddress(String address, CartController cart) async {
     GeocodingPlatform geocoding = GeocodingPlatform.instance;
     List<Location> addresses = await geocoding.locationFromAddress(address);
 
@@ -102,7 +106,7 @@ class _MapsState extends State<Maps> {
 
     Placemark place = await _getAddressByLocation(myPosition);
 
-    _sendAddress(place);
+    _sendAddress(place, cart);
   }
 
   Future<Placemark> _getAddressByLocation(LatLng myPosition) async {
@@ -115,34 +119,38 @@ class _MapsState extends State<Maps> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search...',
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
+    return Consumer<CartController>(
+      builder: (BuildContext context, CartController cart, Widget child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+              ),
+              onSubmitted: (String value) => _getLocationByAddress(value, cart),
+            ),
+            centerTitle: true,
           ),
-          onSubmitted: (String value) => _getLocationByAddress(value),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-        child: GoogleMap(
-          zoomControlsEnabled: false,
-          onMapCreated: _onMapCreated,
-          // onTap: _onTap,
-          markers: markers,
-          initialCameraPosition: _kGooglePlex,
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _getMyLocation,
-        child: Icon(Icons.my_location),
-      ),
+          body: Container(
+            child: GoogleMap(
+              zoomControlsEnabled: false,
+              onMapCreated: _onMapCreated,
+              // onTap: _onTap,
+              markers: markers,
+              initialCameraPosition: _kGooglePlex,
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => _getMyLocation(cart),
+            child: Icon(Icons.my_location),
+          ),
+        );
+      },
     );
   }
 }
