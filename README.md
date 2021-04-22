@@ -3,24 +3,25 @@
 ## O Projeto
 
 O projeto consiste em consumir a API da Marvel, como solicitado no desafio, 
-onde obtemos os dados relacionados aos quadrinhos.
+onde são obtidos os dados relacionados aos quadrinhos.
 
 
 ## Solução Adotada
 
 No projeto foi usada a arquitetura MVC, sendo a solução que achei 
 adequada para o projeto, pois com MVC o código fica mais organizado e 
-também mais fácil de fazer novas implementações por sua divisão em 
+também mais fácil de fazer novas implementações, por sua divisão em 
 camadas.
 Foi 
-usado Provider para disponibilizar algumas informações nas variadas telas, Async/Await para 
+usado Provider para disponibilizar algumas informações em diversas telas. 
+Async/Await para 
 requisições assíncronas.
 
 ## Funcionamento do App
 O aplicativo funciona da seguinte forma:
 
-- Exibe uma Listagem com os Quadrinhos, podendo ser filtrado pelo título do 
-  quadrinho num campo na parte superior da listagem.
+- Exibe uma listagem com os quadrinhos, podendo ser filtrado pelo título do 
+  quadrinho em um campo na parte superior da listagem.
   
 - O usuário clica no quadrinho, onde são mostradas duas opções: __adicionar ao 
   carrinho__ e __mostrar os detalhes do quadrinho__.
@@ -37,9 +38,7 @@ O aplicativo funciona da seguinte forma:
   remover algum quadrinho.
 
 - Para finalizar o usuário vai clicar no botão __Send Me__, onde será 
-  solicitado o endereço para entrega.
-  
-- Será aberta uma tela do 
+  solicitado o endereço para entrega. Será aberta uma tela do 
   Google Maps na qual o usuário pode selecionar no mapa a localização de 
   entrega ou digitar o endereço no campo de pesquisa.
   
