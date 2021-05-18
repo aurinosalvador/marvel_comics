@@ -179,12 +179,15 @@ class _HomeState extends State<Home> {
                           items: comics.map((ComicModel comic) {
                             return Builder(
                               builder: (BuildContext context) {
-                                return CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    height: 400,
-                                    imageUrl:
-                                        '${comic.thumbnail.replaceAll('http', ''
-                                            'https')}/portrait_uncanny.jpg');
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      height: 400,
+                                      imageUrl:
+                                          '${comic.thumbnail.replaceAll('http', ''
+                                              'https')}/portrait_uncanny.jpg'),
+                                );
                               },
                             );
                           }).toList(),
