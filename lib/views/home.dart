@@ -36,6 +36,7 @@ class _HomeState extends State<Home> {
   TextEditingController _searchController;
   RootModel rootModel;
   int activeIndex = 0;
+  CarouselController _carouselController;
 
   @override
   void initState() {
@@ -43,6 +44,7 @@ class _HomeState extends State<Home> {
     _streamController = StreamController<Status>();
     _searchController = TextEditingController();
     _scrollController = ScrollController()..addListener(_scrollListener);
+    _carouselController = CarouselController();
 
     getData('0');
   }
@@ -171,6 +173,14 @@ class _HomeState extends State<Home> {
                             height: 400,
                             // enlargeCenterPage: true,
                             onPageChanged: (int index, _) {
+                              print('Comic id: ${comics[index].id}');
+                              print('Active Index: $activeIndex');
+                              if (comics.length - activeIndex == 10) {
+                                print('comics length: ${comics.length}');
+                                int offset = comics.length + 20;
+                                print('offset: $offset');
+                                getData(offset.toString());
+                              }
                               setState(() {
                                 activeIndex = index;
                               });
@@ -246,66 +256,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
             );
-
-            // return Column(
-            //   children: <Widget>[
-            //     Padding(
-            //       padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
-            //       child: TextField(
-            //         controller: _searchController,
-            //         onEditingComplete: () =>
-            //             _search(context, _searchController.text),
-            //         decoration: InputDecoration(
-            //           labelText: 'Search...',
-            //           suffixIcon: IconButton(
-            //             icon: Icon(Icons.search),
-            //             onPressed: () =>
-            //                 _search(context, _searchController.text),
-            //           ),
-            //         ),
-            //         maxLines: 1,
-            //       ),
-            //     ),
-            //     Expanded(
-            //       child: GridView.extent(
-            //         controller: _scrollController,
-            //         maxCrossAxisExtent: 300.0,
-            //         padding: const EdgeInsets.all(8.0),
-            //         childAspectRatio: 0.556,
-            //         mainAxisSpacing: 8.0,
-            //         crossAxisSpacing: 8.0,
-            //         children: comics
-            //             .map((ComicModel comic) => ComicCard(
-            //                   comic: comic,
-            //                 ))
-            //             .toList(),
-            //       ),
-            //     ),
-            //     if (snapshot.data == Status.ListEnd)
-            //       Container(
-            //         padding: const EdgeInsets.symmetric(vertical: 8.0),
-            //         child: ElevatedButton(
-            //           onPressed: () {
-            //             int offset = comics.length + 20;
-            //             if (_searchController.text == null) {
-            //               getData(offset.toString());
-            //             } else {
-            //               getData(
-            //                 offset.toString(),
-            //                 title: _searchController.text,
-            //               );
-            //             }
-            //           },
-            //           child: Text('Load more'),
-            //         ),
-            //       ),
-            //     if (snapshot.data == Status.Loading)
-            //       Container(
-            //         padding: const EdgeInsets.symmetric(vertical: 8.0),
-            //         child: CircularProgressIndicator(),
-            //       ),
-            //   ],
-            // );
           } else {
             if (snapshot.data == Status.Ready) {
               return Column(
