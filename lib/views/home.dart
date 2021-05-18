@@ -12,7 +12,6 @@ import 'package:marvel_comics/controllers/comic_controller.dart';
 import 'package:marvel_comics/models/comic_model.dart';
 import 'package:marvel_comics/models/root_model.dart';
 import 'package:marvel_comics/views/cart.dart';
-import 'package:marvel_comics/widgets/comic_card.dart';
 import 'package:marvel_comics/widgets/waiting_message.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +28,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  ScrollController _scrollController;
   List<ComicModel> comics = <ComicModel>[];
   List<ComicModel> cart = <ComicModel>[];
   StreamController<Status> _streamController;
@@ -43,18 +41,9 @@ class _HomeState extends State<Home> {
     super.initState();
     _streamController = StreamController<Status>();
     _searchController = TextEditingController();
-    _scrollController = ScrollController()..addListener(_scrollListener);
     _carouselController = CarouselController();
 
     getData('0');
-  }
-
-  void _scrollListener() {
-    if (_scrollController.offset >=
-            _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      _streamController.add(Status.ListEnd);
-    }
   }
 
   void getData(String offset, {String title}) async {
@@ -298,7 +287,6 @@ class _HomeState extends State<Home> {
   void dispose() {
     _streamController.close();
     _searchController.dispose();
-    _scrollController.dispose();
     super.dispose();
   }
 }
