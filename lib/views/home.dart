@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:marvel_comics/controllers/cart_controller.dart';
@@ -31,6 +35,7 @@ class _HomeState extends State<Home> {
   StreamController<Status> _streamController;
   TextEditingController _searchController;
   RootModel rootModel;
+  int activeIndex = 0;
 
   @override
   void initState() {
@@ -140,65 +145,164 @@ class _HomeState extends State<Home> {
         stream: _streamController.stream,
         builder: (BuildContext context, AsyncSnapshot<Status> snapshot) {
           if (comics.isNotEmpty) {
-            return Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
-                  child: TextField(
-                    controller: _searchController,
-                    onEditingComplete: () =>
-                        _search(context, _searchController.text),
-                    decoration: InputDecoration(
-                      labelText: 'Search...',
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () =>
-                            _search(context, _searchController.text),
+            return Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: CachedNetworkImageProvider(
+                    '${comics[activeIndex].thumbnail.replaceAll('http', 'https')}/portrait_uncanny.jpg',
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: ClipRRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      ///Images Carousel
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                            initialPage: activeIndex,
+                            enableInfiniteScroll: false,
+                            height: 400,
+                            // enlargeCenterPage: true,
+                            onPageChanged: (int index, _) {
+                              setState(() {
+                                activeIndex = index;
+                              });
+                            },
+                          ),
+                          items: comics.map((ComicModel comic) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    height: 400,
+                                    imageUrl:
+                                        '${comic.thumbnail.replaceAll('http', ''
+                                            'https')}/portrait_uncanny.jpg');
+                              },
+                            );
+                          }).toList(),
+                        ),
                       ),
-                    ),
-                    maxLines: 1,
+
+                      /// Info
+                      Container(
+                        height: 200,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20.0),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              /// Title
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: Text(
+                                  comics[activeIndex].title,
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                  maxLines: 1,
+                                  textScaleFactor: 1.2,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+
+                              /// Description
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: Text(
+                                  comics[activeIndex].description ??
+                                      'No Description',
+                                  textAlign: TextAlign.justify,
+                                  maxLines: 8,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: GridView.extent(
-                    controller: _scrollController,
-                    maxCrossAxisExtent: 300.0,
-                    padding: const EdgeInsets.all(8.0),
-                    childAspectRatio: 0.556,
-                    mainAxisSpacing: 8.0,
-                    crossAxisSpacing: 8.0,
-                    children: comics
-                        .map((ComicModel comic) => ComicCard(
-                              comic: comic,
-                            ))
-                        .toList(),
-                  ),
-                ),
-                if (snapshot.data == Status.ListEnd)
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        int offset = comics.length + 20;
-                        if (_searchController.text == null) {
-                          getData(offset.toString());
-                        } else {
-                          getData(
-                            offset.toString(),
-                            title: _searchController.text,
-                          );
-                        }
-                      },
-                      child: Text('Load more'),
-                    ),
-                  ),
-                if (snapshot.data == Status.Loading)
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: CircularProgressIndicator(),
-                  ),
-              ],
+              ),
             );
+
+            // return Column(
+            //   children: <Widget>[
+            //     Padding(
+            //       padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
+            //       child: TextField(
+            //         controller: _searchController,
+            //         onEditingComplete: () =>
+            //             _search(context, _searchController.text),
+            //         decoration: InputDecoration(
+            //           labelText: 'Search...',
+            //           suffixIcon: IconButton(
+            //             icon: Icon(Icons.search),
+            //             onPressed: () =>
+            //                 _search(context, _searchController.text),
+            //           ),
+            //         ),
+            //         maxLines: 1,
+            //       ),
+            //     ),
+            //     Expanded(
+            //       child: GridView.extent(
+            //         controller: _scrollController,
+            //         maxCrossAxisExtent: 300.0,
+            //         padding: const EdgeInsets.all(8.0),
+            //         childAspectRatio: 0.556,
+            //         mainAxisSpacing: 8.0,
+            //         crossAxisSpacing: 8.0,
+            //         children: comics
+            //             .map((ComicModel comic) => ComicCard(
+            //                   comic: comic,
+            //                 ))
+            //             .toList(),
+            //       ),
+            //     ),
+            //     if (snapshot.data == Status.ListEnd)
+            //       Container(
+            //         padding: const EdgeInsets.symmetric(vertical: 8.0),
+            //         child: ElevatedButton(
+            //           onPressed: () {
+            //             int offset = comics.length + 20;
+            //             if (_searchController.text == null) {
+            //               getData(offset.toString());
+            //             } else {
+            //               getData(
+            //                 offset.toString(),
+            //                 title: _searchController.text,
+            //               );
+            //             }
+            //           },
+            //           child: Text('Load more'),
+            //         ),
+            //       ),
+            //     if (snapshot.data == Status.Loading)
+            //       Container(
+            //         padding: const EdgeInsets.symmetric(vertical: 8.0),
+            //         child: CircularProgressIndicator(),
+            //       ),
+            //   ],
+            // );
           } else {
             if (snapshot.data == Status.Ready) {
               return Column(
